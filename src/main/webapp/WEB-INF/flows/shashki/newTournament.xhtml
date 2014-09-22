@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:o="http://omnifaces.org/ui"
+		xmlns:of="http://omnifaces.org/functions"
+		template="/WEB-INF/templates/general.xhtml">
+		
+<ui:define name="title"><h:outputText value="Турнир!" /></ui:define>
+	<ui:define name="header"><h:outputText value="Начинаем турнир!"  /></ui:define>
+	<ui:define name="content">
+		
+		<h:form id="tournamentForm">
+	
+			<p:fieldset styleClass = "fieldset" legend="Данные турнира">
+				<p:messages id="messages" />
+			
+				<h:panelGrid id="logPanelGrid" style="margin-top: 25px; text-align: right" cellspacing="8" columns="3">
+							 				 			 	
+					<h:panelGroup>
+						<p:outputLabel for="console" value="Система проведения турнира" />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+			        <p:selectOneMenu id="console" value="#{tournament.tournamentTypeEntity}" required="true"  effect="fade"  effectDuration="100" converter="TTournamnetTypeConvertor">
+			            <f:selectItem itemLabel="Выберите систему проведения турнира"  noSelectionOption="true"/>
+			            <f:selectItems value="#{judgeService.selectItems}" 
+			            var="theme" itemLabel="#{theme.description}" itemValue="#{theme}"/>
+			        </p:selectOneMenu>
+			        <p:tooltip for="console" styleClass="tooltip" showEvent="focus" hideEvent="blur" />
+			        
+			        
+			        <h:panelGroup>
+						<h:outputText value="Название турнира" />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputText id="tournamentName" label="Название турнира" value="#{tournament.tournamentName}" required="true" title="Введите название трунира" />
+					<p:tooltip for="tournamentName" styleClass="tooltip" showEvent="focus" hideEvent="blur" />
+										
+					
+					<h:panelGroup>
+						<h:outputText value="Дата турнира" />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					
+					<p:calendar id="calendar" value="#{tournament.tournamentDate}" required="true"  mode="popup" pattern="dd/MM/yyyy" >
+                      	<f:convertDateTime pattern="dd/MM/yyyy" />
+                    </p:calendar>
+					<h:panelGroup>
+					</h:panelGroup>
+					<p:commandButton id="newTournament" action="newTournament" update="messages" icon="ui-icon-plus" value="Зарегистрировать турнир" />
+										
+				</h:panelGrid>
+			</p:fieldset>
+		</h:form>
+	</ui:define>
+ 	
+	
+</ui:composition>

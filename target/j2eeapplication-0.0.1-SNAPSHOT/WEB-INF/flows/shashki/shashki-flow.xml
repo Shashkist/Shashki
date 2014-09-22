@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow
+        http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<secured attributes="ROLE_USER"/>
+
+	
+	<var name = "judge" class="com.example.j2eeapp.domain.JudgeEntity" />
+	<var name = "tournament" class="com.example.j2eeapp.domain.TournamentEntity" /> 
+	<var name = "tournamentType" class="com.example.j2eeapp.domain.TTournamentTypeEntity" />
+	<var name = "unitOfWork" class = "com.example.j2eeapp.utils.UnitOfWork" />
+	<var name = "UIUtils" class = "com.example.j2eeapp.utils.UIUtils"/>
+	<var name = "playerTournament" class = "com.example.j2eeapp.domain.PlayerTournamentEntity"/>
+		
+	
+	<on-start>
+		<evaluate expression="userService.loadUserEntityByUserName(currentUser.name)" result = "flowScope.user"/>
+	</on-start>
+	
+	
+	<view-state id="welcome-shashki" view= "welcome-shashki.xhtml" model="judge">
+		<transition on = "newJudge" to = "newTournament" >
+			<evaluate expression="judgeService.initLists(unitOfWork,tournament)" />
+		</transition>
+	</view-state>
+	
+	<view-state id="newTournament" view= "newTournament.xhtml" model="tournament">
+		<transition on = "newTournament" to = "tournament-table" >
+			<evaluate expression="judgeService.createTournament(tournament, judge)" />
+		</transition>
+	</view-state>
+	
+	<view-state id="tournament-table" view= "tournamentTableCreation.xhtml" model = "tournament">
+		<var name = "player" class="com.example.j2eeapp.domain.PlayerEntity" />
+		<transition></transition>
+	</view-state>
+	
+	
+</flow>                               
